@@ -15,6 +15,7 @@ public class AbstractCell implements Cell {
      */
     private Integer columnIndex;
 
+    @Override
     public Integer getRowIndex() {
         return rowIndex;
     }
@@ -23,6 +24,7 @@ public class AbstractCell implements Cell {
         this.rowIndex = rowIndex;
     }
 
+    @Override
     public Integer getColumnIndex() {
         return columnIndex;
     }
