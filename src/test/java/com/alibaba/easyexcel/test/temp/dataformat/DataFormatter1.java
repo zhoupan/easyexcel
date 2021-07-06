@@ -169,8 +169,9 @@ public class DataFormatter1 implements Observer {
     private static final String invalidDateTimeString;
     static {
         StringBuilder buf = new StringBuilder();
-        for (int i = 0; i < 255; i++)
+        for (int i = 0; i < 255; i++) {
             buf.append('#');
+        }
         invalidDateTimeString = buf.toString();
     }
 
@@ -214,10 +215,12 @@ public class DataFormatter1 implements Observer {
         }
 
         void checkForLocaleChange(Locale newLocale) {
-            if (!localeIsAdapting)
+            if (!localeIsAdapting) {
                 return;
-            if (newLocale.equals(locale))
+            }
+            if (newLocale.equals(locale)) {
                 return;
+            }
             super.setChanged();
             notifyObservers(newLocale);
         }
@@ -297,8 +300,9 @@ public class DataFormatter1 implements Observer {
      * @return A Format for the format String
      */
     private Format getFormat(Cell cell, ConditionalFormattingEvaluator cfEvaluator) {
-        if (cell == null)
+        if (cell == null) {
             return null;
+        }
 
         ExcelNumberFormat numFmt = ExcelNumberFormat.from(cell, cfEvaluator);
 
@@ -399,11 +403,13 @@ public class DataFormatter1 implements Observer {
 
             // Paranoid replacement...
             int at = formatStr.indexOf(colour);
-            if (at == -1)
+            if (at == -1) {
                 break;
+            }
             String nFormatStr = formatStr.substring(0, at) + formatStr.substring(at + colour.length());
-            if (nFormatStr.equals(formatStr))
+            if (nFormatStr.equals(formatStr)) {
                 break;
+            }
 
             // Try again in case there's multiple
             formatStr = nFormatStr;
@@ -432,7 +438,7 @@ public class DataFormatter1 implements Observer {
             return generalNumberFormat;
         }
 
-        if ("".equals("")||(DateUtil.isADateFormat(formatIndex, formatStr) && DateUtil.isValidExcelDate(cellValue))) {
+        if ("".equals("") || (DateUtil.isADateFormat(formatIndex, formatStr) && DateUtil.isValidExcelDate(cellValue))) {
             return createDateFormat(formatStr, cellValue);
         }
         // Excel supports fractions in format strings, which Java doesn't
@@ -978,10 +984,10 @@ public class DataFormatter1 implements Observer {
         switch (cellType) {
             case NUMERIC:
 
-//                if (DateUtil.isCellDateFormatted(cell, cfEvaluator)) {
-                    return getFormattedDateString(cell, cfEvaluator);
-//                }
-//                return getFormattedNumberString(cell, cfEvaluator);
+                // if (DateUtil.isCellDateFormatted(cell, cfEvaluator)) {
+                return getFormattedDateString(cell, cfEvaluator);
+            // }
+            // return getFormattedNumberString(cell, cfEvaluator);
 
             case STRING:
                 return cell.getRichStringCellValue().getString();
@@ -1091,12 +1097,15 @@ public class DataFormatter1 implements Observer {
      * @param localeObj
      *            only reacts on Locale objects
      */
+    @Override
     public void update(Observable observable, Object localeObj) {
-        if (!(localeObj instanceof Locale))
+        if (!(localeObj instanceof Locale)) {
             return;
+        }
         Locale newLocale = (Locale)localeObj;
-        if (!localeIsAdapting || newLocale.equals(locale))
+        if (!localeIsAdapting || newLocale.equals(locale)) {
             return;
+        }
 
         locale = newLocale;
 
@@ -1277,6 +1286,7 @@ public class DataFormatter1 implements Observer {
             this.result = result;
         }
 
+        @Override
         public StringBuffer format(Object obj, StringBuffer toAppendTo, FieldPosition pos) {
             if (emulateCSV) {
                 return toAppendTo.append(result.text);
@@ -1285,6 +1295,7 @@ public class DataFormatter1 implements Observer {
             }
         }
 
+        @Override
         public Object parseObject(String source, ParsePosition pos) {
             return null; // Not supported
         }
