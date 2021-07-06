@@ -18,13 +18,26 @@ import com.alibaba.excel.write.builder.ExcelWriterBuilder;
  */
 public class TemperatureUsecase {
 
+    /** The temperature provider. */
     private TemperatureProvider temperatureProvider;
 
+    /**
+     * Instantiates a new temperature usecase.
+     *
+     * @param temperatureProvider the temperature provider
+     */
     public TemperatureUsecase(TemperatureProvider temperatureProvider) {
         super();
         this.temperatureProvider = temperatureProvider;
     }
 
+    /**
+     * Export to excel file.
+     *
+     * @param excelFile the excel file
+     * @param filter the filter
+     * @return the data result support
+     */
     public DataResultSupport<File> exportToExcelFile(File excelFile, DateRangeFilter filter) {
         StopWatch sw = new StopWatch(LoggerSupport.messageFormat("exportToExcelFile:{}:{}", excelFile, filter));
         DataResultSupport<File> result = new DataResultSupport<File>();
@@ -48,4 +61,5 @@ public class TemperatureUsecase {
         LoggerSupport.info("exportToExcelFile:{}:{}", excelFile, sw);
         return result;
     }
+
 }

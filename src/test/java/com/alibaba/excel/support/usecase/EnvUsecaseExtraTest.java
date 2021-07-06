@@ -16,15 +16,19 @@ import com.alibaba.excel.util.DateUtils;
 /**
  * The Class EnvUsecaseTest.
  */
-public class EnvUsecaseTest {
-    
+public class EnvUsecaseExtraTest {
+
     /**
      * Test export to excel file.
      *
-     * @param dir the dir
-     * @param period the period
-     * @param timeUnit the time unit
-     * @param months the months
+     * @param dir
+     *            the dir
+     * @param period
+     *            the period
+     * @param timeUnit
+     *            the time unit
+     * @param months
+     *            the months
      */
     public void testExportToExcelFile(File dir, int period, TimeUnit timeUnit, int months) {
         FakeTemperatureProvider fakeTemperatureProvider = new FakeTemperatureProvider();
@@ -44,7 +48,8 @@ public class EnvUsecaseTest {
         String filename = LoggerSupport.messageFormat("Months({})-{}({})-({}-{}).xlsx", months, timeUnit, period,
             DateUtils.format(from, format), DateUtils.format(to, format));
         File file = new File(dir, filename);
-        DataResultSupport<File> result = usecase.exportToExcelFile(file, filter);
+        DataResultSupport<File> result =
+            usecase.exportToExcelFile(file, DateRangeFilter.create(filter, TimeUnit.DAYS, 1));
         Assert.assertTrue(result.getMessage(), result.isSuccess());
     }
 
