@@ -1,6 +1,8 @@
 package com.alibaba.excel.write.builder;
 
+import java.io.Closeable;
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
@@ -14,7 +16,8 @@ import com.alibaba.excel.write.metadata.WriteWorkbook;
  *
  * @author Jiaju Zhuang
  */
-public class ExcelWriterBuilder extends AbstractExcelWriterParameterBuilder<ExcelWriterBuilder, WriteWorkbook> {
+public class ExcelWriterBuilder extends AbstractExcelWriterParameterBuilder<ExcelWriterBuilder, WriteWorkbook>
+    implements Closeable {
     /**
      * Workbook
      */
@@ -126,8 +129,13 @@ public class ExcelWriterBuilder extends AbstractExcelWriterParameterBuilder<Exce
         return this;
     }
 
-    public ExcelWriter build() {
-        return new ExcelWriter(writeWorkbook);
+    private ExcelWriter excelWriter = null;
+
+    public synchronized ExcelWriter build() {
+        if (this.excelWriter == null) {
+            this.excelWriter = new ExcelWriter(writeWorkbook);
+        }
+        return this.excelWriter;
     }
 
     public ExcelWriterSheetBuilder sheet() {
@@ -185,11 +193,18 @@ public class ExcelWriterBuilder extends AbstractExcelWriterParameterBuilder<Exce
     }
 
     public void finish() {
-        this.excelWriterSheetBuilder().finish();
+        if (this.excelWriterSheetBuilder != null) {
+            this.excelWriterSheetBuilder.finish();
+        }
     }
 
     @Override
     protected WriteWorkbook parameter() {
         return writeWorkbook;
+    }
+
+    @Override
+    public void close() throws IOException {
+        this.finish();
     }
 }
