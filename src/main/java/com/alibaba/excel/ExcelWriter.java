@@ -1,5 +1,7 @@
 package com.alibaba.excel;
 
+import java.io.Closeable;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
@@ -33,7 +35,7 @@ import com.alibaba.excel.write.metadata.fill.FillConfig;
  *
  * @author jipengfei
  */
-public class ExcelWriter {
+public class ExcelWriter implements Closeable {
     private static final Logger LOGGER = LoggerFactory.getLogger(ExcelWriter.class);
 
     private ExcelBuilder excelBuilder;
@@ -350,5 +352,10 @@ public class ExcelWriter {
      */
     public WriteContext writeContext() {
         return excelBuilder.writeContext();
+    }
+
+    @Override
+    public void close() throws IOException {
+      this.finalize();
     }
 }
