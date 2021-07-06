@@ -134,6 +134,21 @@ public class ExcelWriterBuilder extends AbstractExcelWriterParameterBuilder<Exce
         return sheet(null, null);
     }
 
+    public ExcelWriterBuilder newSheet() {
+        this.excelWriterSheetBuilder().newSheet();
+        return this;
+    }
+
+    public ExcelWriterSheetBuilder newSheet(String sheetName) {
+        this.excelWriterSheetBuilder().newSheet();
+        return this.sheet(sheetName);
+    }
+
+    public ExcelWriterSheetBuilder newSheet(Integer sheetNo) {
+        this.excelWriterSheetBuilder().newSheet();
+        return this.sheet(sheetNo);
+    }
+
     public ExcelWriterSheetBuilder sheet(Integer sheetNo) {
         return sheet(sheetNo, null);
     }
@@ -142,9 +157,17 @@ public class ExcelWriterBuilder extends AbstractExcelWriterParameterBuilder<Exce
         return sheet(null, sheetName);
     }
 
+    private ExcelWriterSheetBuilder excelWriterSheetBuilder;
+
+    public ExcelWriterSheetBuilder excelWriterSheetBuilder() {
+        if (this.excelWriterSheetBuilder == null) {
+            this.excelWriterSheetBuilder = new ExcelWriterSheetBuilder(build());
+        }
+        return this.excelWriterSheetBuilder;
+    }
+
     public ExcelWriterSheetBuilder sheet(Integer sheetNo, String sheetName) {
-        ExcelWriter excelWriter = build();
-        ExcelWriterSheetBuilder excelWriterSheetBuilder = new ExcelWriterSheetBuilder(excelWriter);
+        ExcelWriterSheetBuilder excelWriterSheetBuilder = this.excelWriterSheetBuilder();
         if (sheetNo != null) {
             excelWriterSheetBuilder.sheetNo(sheetNo);
         }
@@ -152,6 +175,10 @@ public class ExcelWriterBuilder extends AbstractExcelWriterParameterBuilder<Exce
             excelWriterSheetBuilder.sheetName(sheetName);
         }
         return excelWriterSheetBuilder;
+    }
+
+    public void finish() {
+        this.excelWriterSheetBuilder().finish();
     }
 
     @Override
