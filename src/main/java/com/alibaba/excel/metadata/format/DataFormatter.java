@@ -109,8 +109,9 @@ public class DataFormatter {
     private static final String invalidDateTimeString;
     static {
         StringBuilder buf = new StringBuilder();
-        for (int i = 0; i < 255; i++)
+        for (int i = 0; i < 255; i++) {
             buf.append('#');
+        }
         invalidDateTimeString = buf.toString();
     }
 
@@ -157,20 +158,18 @@ public class DataFormatter {
             this.locale = Locale.getDefault();
             this.useScientificFormat = Boolean.FALSE;
         } else {
-            this.use1904windowing =
-                globalConfiguration.getUse1904windowing() != null ? globalConfiguration.getUse1904windowing()
-                    : Boolean.FALSE;
+            this.use1904windowing = globalConfiguration.getUse1904windowing() != null
+                ? globalConfiguration.getUse1904windowing() : Boolean.FALSE;
             this.locale =
                 globalConfiguration.getLocale() != null ? globalConfiguration.getLocale() : Locale.getDefault();
-            this.useScientificFormat =
-                globalConfiguration.getUseScientificFormat() != null ? globalConfiguration.getUseScientificFormat()
-                    : Boolean.FALSE;
+            this.useScientificFormat = globalConfiguration.getUseScientificFormat() != null
+                ? globalConfiguration.getUseScientificFormat() : Boolean.FALSE;
         }
         this.dateSymbols = DateFormatSymbols.getInstance(this.locale);
         this.decimalSymbols = DecimalFormatSymbols.getInstance(this.locale);
     }
 
-    private Format getFormat(Double data,Integer dataFormat, String dataFormatString) {
+    private Format getFormat(Double data, Integer dataFormat, String dataFormatString) {
 
         // Might be better to separate out the n p and z formats, falling back to p when n and z are not set.
         // That however would require other code to be re factored.
@@ -180,29 +179,27 @@ public class DataFormatter {
         String formatStr = dataFormatString;
 
         // Excel supports 2+ part conditional data formats, eg positive/negative/zero,
-        //  or (>1000),(>0),(0),(negative). As Java doesn't handle these kinds
-        //  of different formats for different ranges, just +ve/-ve, we need to
-        //  handle these ourselves in a special way.
+        // or (>1000),(>0),(0),(negative). As Java doesn't handle these kinds
+        // of different formats for different ranges, just +ve/-ve, we need to
+        // handle these ourselves in a special way.
         // For now, if we detect 2+ parts, we call out to CellFormat to handle it
         // TODO Going forward, we should really merge the logic between the two classes
-        if (formatStr.contains(";") &&
-            (formatStr.indexOf(';') != formatStr.lastIndexOf(';')
-                || rangeConditionalPattern.matcher(formatStr).matches()
-            ) ) {
+        if (formatStr.contains(";") && (formatStr.indexOf(';') != formatStr.lastIndexOf(';')
+            || rangeConditionalPattern.matcher(formatStr).matches())) {
             try {
                 // Ask CellFormat to get a formatter for it
                 CellFormat cfmt = CellFormat.getInstance(locale, formatStr);
                 // CellFormat requires callers to identify date vs not, so do so
                 Object cellValueO = data;
                 if (DateUtil.isADateFormat(dataFormat, formatStr) &&
-                    // don't try to handle Date value 0, let a 3 or 4-part format take care of it
+                // don't try to handle Date value 0, let a 3 or 4-part format take care of it
                     data.doubleValue() != 0.0) {
                     cellValueO = DateUtil.getJavaDate(data, use1904windowing);
                 }
                 // Wrap and return (non-cachable - CellFormat does that)
-                return new CellFormatResultWrapper( cfmt.apply(cellValueO) );
+                return new CellFormatResultWrapper(cfmt.apply(cellValueO));
             } catch (Exception e) {
-                LOGGER.warn("Formatting failed for format {}, falling back",formatStr, e);
+                LOGGER.warn("Formatting failed for format {}, falling back", formatStr, e);
             }
         }
 
@@ -240,11 +237,13 @@ public class DataFormatter {
 
             // Paranoid replacement...
             int at = formatStr.indexOf(colour);
-            if (at == -1)
+            if (at == -1) {
                 break;
+            }
             String nFormatStr = formatStr.substring(0, at) + formatStr.substring(at + colour.length());
-            if (nFormatStr.equals(formatStr))
+            if (nFormatStr.equals(formatStr)) {
                 break;
+            }
 
             // Try again in case there's multiple
             formatStr = nFormatStr;
@@ -833,8 +832,8 @@ public class DataFormatter {
     }
 
     /**
-     * Workaround until we merge {@link org.apache.poi.ss.usermodel.DataFormatter} with {@link CellFormat}. Constant, non-cachable wrapper around a
-     * {@link CellFormatResult}
+     * Workaround until we merge {@link org.apache.poi.ss.usermodel.DataFormatter} with {@link CellFormat}. Constant,
+     * non-cachable wrapper around a {@link CellFormatResult}
      */
     private final class CellFormatResultWrapper extends Format {
         private final CellFormatResult result;
