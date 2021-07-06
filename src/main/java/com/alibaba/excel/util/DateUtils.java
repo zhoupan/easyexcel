@@ -3,7 +3,9 @@ package com.alibaba.excel.util;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -305,5 +307,387 @@ public class DateUtils {
     public static void removeThreadLocalCache() {
         DATE_THREAD_LOCAL.remove();
         DATE_FORMAT_THREAD_LOCAL.remove();
+    }
+
+    /**
+     * Adds a number of years to a date returning a new object. The original {@code Date} is unchanged.
+     *
+     * @param date
+     *            the date, not null
+     * @param amount
+     *            the amount to add, may be negative
+     * @return the new {@code Date} with the amount added
+     */
+    public static Date addYears(final Date date, final int amount) {
+        return add(date, Calendar.YEAR, amount);
+    }
+
+    // -----------------------------------------------------------------------
+    /**
+     * Adds a number of months to a date returning a new object. The original {@code Date} is unchanged.
+     *
+     * @param date
+     *            the date, not null
+     * @param amount
+     *            the amount to add, may be negative
+     * @return the new {@code Date} with the amount added
+     */
+    public static Date addMonths(final Date date, final int amount) {
+        return add(date, Calendar.MONTH, amount);
+    }
+
+    // -----------------------------------------------------------------------
+    /**
+     * Adds a number of weeks to a date returning a new object. The original {@code Date} is unchanged.
+     *
+     * @param date
+     *            the date, not null
+     * @param amount
+     *            the amount to add, may be negative
+     * @return the new {@code Date} with the amount added
+     */
+    public static Date addWeeks(final Date date, final int amount) {
+        return add(date, Calendar.WEEK_OF_YEAR, amount);
+    }
+
+    // -----------------------------------------------------------------------
+    /**
+     * Adds a number of days to a date returning a new object. The original {@code Date} is unchanged.
+     *
+     * @param date
+     *            the date, not null
+     * @param amount
+     *            the amount to add, may be negative
+     * @return the new {@code Date} with the amount added
+     */
+    public static Date addDays(final Date date, final int amount) {
+        return add(date, Calendar.DAY_OF_MONTH, amount);
+    }
+
+    // -----------------------------------------------------------------------
+    /**
+     * Adds a number of hours to a date returning a new object. The original {@code Date} is unchanged.
+     *
+     * @param date
+     *            the date, not null
+     * @param amount
+     *            the amount to add, may be negative
+     * @return the new {@code Date} with the amount added
+     */
+    public static Date addHours(final Date date, final int amount) {
+        return add(date, Calendar.HOUR_OF_DAY, amount);
+    }
+
+    // -----------------------------------------------------------------------
+    /**
+     * Adds a number of minutes to a date returning a new object. The original {@code Date} is unchanged.
+     *
+     * @param date
+     *            the date, not null
+     * @param amount
+     *            the amount to add, may be negative
+     * @return the new {@code Date} with the amount added
+     */
+    public static Date addMinutes(final Date date, final int amount) {
+        return add(date, Calendar.MINUTE, amount);
+    }
+
+    // -----------------------------------------------------------------------
+    /**
+     * Adds a number of seconds to a date returning a new object. The original {@code Date} is unchanged.
+     *
+     * @param date
+     *            the date, not null
+     * @param amount
+     *            the amount to add, may be negative
+     * @return the new {@code Date} with the amount added
+     */
+    public static Date addSeconds(final Date date, final int amount) {
+        return add(date, Calendar.SECOND, amount);
+    }
+
+    // -----------------------------------------------------------------------
+    /**
+     * Adds a number of milliseconds to a date returning a new object. The original {@code Date} is unchanged.
+     *
+     * @param date
+     *            the date, not null
+     * @param amount
+     *            the amount to add, may be negative
+     * @return the new {@code Date} with the amount added
+     */
+    public static Date addMilliseconds(final Date date, final int amount) {
+        return add(date, Calendar.MILLISECOND, amount);
+    }
+
+    // -----------------------------------------------------------------------
+    /**
+     * Adds to a date returning a new object. The original {@code Date} is unchanged.
+     *
+     * @param date
+     *            the date, not null
+     * @param calendarField
+     *            the calendar field to add to
+     * @param amount
+     *            the amount to add, may be negative
+     * @return the new {@code Date} with the amount added
+     */
+    private static Date add(final Date date, final int calendarField, final int amount) {
+        validateDateNotNull(date);
+        final Calendar c = Calendar.getInstance();
+        c.setTime(date);
+        c.add(calendarField, amount);
+        return c.getTime();
+    }
+
+    // -----------------------------------------------------------------------
+    /**
+     * Sets the years field to a date returning a new object. The original {@code Date} is unchanged.
+     *
+     * @param date
+     *            the date, not null
+     * @param amount
+     *            the amount to set
+     * @return a new {@code Date} set with the specified value
+     * @since 2.4
+     */
+    public static Date setYears(final Date date, final int amount) {
+        return set(date, Calendar.YEAR, amount);
+    }
+
+    // -----------------------------------------------------------------------
+    /**
+     * Sets the months field to a date returning a new object. The original {@code Date} is unchanged.
+     *
+     * @param date
+     *            the date, not null
+     * @param amount
+     *            the amount to set
+     * @return a new {@code Date} set with the specified value
+     * @since 2.4
+     */
+    public static Date setMonths(final Date date, final int amount) {
+        return set(date, Calendar.MONTH, amount);
+    }
+
+    // -----------------------------------------------------------------------
+    /**
+     * Sets the day of month field to a date returning a new object. The original {@code Date} is unchanged.
+     *
+     * @param date
+     *            the date, not null
+     * @param amount
+     *            the amount to set
+     * @return a new {@code Date} set with the specified value
+     * @since 2.4
+     */
+    public static Date setDays(final Date date, final int amount) {
+        return set(date, Calendar.DAY_OF_MONTH, amount);
+    }
+
+    // -----------------------------------------------------------------------
+    /**
+     * Sets the hours field to a date returning a new object. Hours range from 0-23. The original
+     *
+     * @param date
+     *            the date, not null
+     * @param amount
+     *            the amount to set
+     * @return a new {@code Date} set with the specified value {@code Date} is unchanged.
+     * @since 2.4
+     */
+    public static Date setHours(final Date date, final int amount) {
+        return set(date, Calendar.HOUR_OF_DAY, amount);
+    }
+
+    // -----------------------------------------------------------------------
+    /**
+     * Sets the minute field to a date returning a new object. The original {@code Date} is unchanged.
+     *
+     * @param date
+     *            the date, not null
+     * @param amount
+     *            the amount to set
+     * @return a new {@code Date} set with the specified value
+     * @since 2.4
+     */
+    public static Date setMinutes(final Date date, final int amount) {
+        return set(date, Calendar.MINUTE, amount);
+    }
+
+    // -----------------------------------------------------------------------
+    /**
+     * Sets the seconds field to a date returning a new object. The original {@code Date} is unchanged.
+     *
+     * @param date
+     *            the date, not null
+     * @param amount
+     *            the amount to set
+     * @return a new {@code Date} set with the specified value
+     * @since 2.4
+     */
+    public static Date setSeconds(final Date date, final int amount) {
+        return set(date, Calendar.SECOND, amount);
+    }
+
+    // -----------------------------------------------------------------------
+    /**
+     * Sets the milliseconds field to a date returning a new object. The original {@code Date} is unchanged.
+     *
+     * @param date
+     *            the date, not null
+     * @param amount
+     *            the amount to set
+     * @return a new {@code Date} set with the specified value
+     * @since 2.4
+     */
+    public static Date setMilliseconds(final Date date, final int amount) {
+        return set(date, Calendar.MILLISECOND, amount);
+    }
+
+    // -----------------------------------------------------------------------
+    /**
+     * Sets the specified field to a date returning a new object. This does not use a lenient calendar. The original
+     * {@code Date} is unchanged.
+     *
+     * @param date
+     *            the date, not null
+     * @param calendarField
+     *            the {@code Calendar} field to set the amount to
+     * @param amount
+     *            the amount to set
+     * @return a new {@code Date} set with the specified value
+     * @since 2.4
+     */
+    private static Date set(final Date date, final int calendarField, final int amount) {
+        validateDateNotNull(date);
+        // getInstance() returns a new object, so this method is thread safe.
+        final Calendar c = Calendar.getInstance();
+        c.setLenient(false);
+        c.setTime(date);
+        c.set(calendarField, amount);
+        return c.getTime();
+    }
+
+    /**
+     * Validate date not null.
+     *
+     * @param date
+     *            the date
+     */
+    private static void validateDateNotNull(final Date date) {
+        CoreUtils.checkNotNull(date, "The date must not be null");
+    }
+
+    /**
+     * Create a new date with this year, month and day.
+     *
+     * @param year
+     *            The year.
+     * @param month
+     *            The month (1-12).
+     * @param day
+     *            The day (1-31).
+     * @return The date.
+     */
+    public static Date toDate(int year, int month, int day) {
+        return new GregorianCalendar(year, month - 1, day).getTime();
+    }
+
+    /**
+     * Checks if two date objects are on the same day ignoring time.
+     *
+     * <p>
+     * 28 Mar 2002 13:45 and 28 Mar 2002 06:01 would return true. 28 Mar 2002 13:45 and 12 Mar 2002 13:45 would return
+     * false.
+     *
+     * @param date1
+     *            the first date, not altered, not null
+     * @param date2
+     *            the second date, not altered, not null
+     * @return true if they represent the same day
+     * @since 2.1
+     */
+    public static boolean isSameDay(final Date date1, final Date date2) {
+        if (date1 == null || date2 == null) {
+            throw nullDateIllegalArgumentException();
+        }
+        final Calendar cal1 = Calendar.getInstance();
+        cal1.setTime(date1);
+        final Calendar cal2 = Calendar.getInstance();
+        cal2.setTime(date2);
+        return isSameDay(cal1, cal2);
+    }
+
+    /**
+     * Checks if two calendar objects are on the same day ignoring time.
+     *
+     * <p>
+     * 28 Mar 2002 13:45 and 28 Mar 2002 06:01 would return true. 28 Mar 2002 13:45 and 12 Mar 2002 13:45 would return
+     * false.
+     *
+     * @param cal1
+     *            the first calendar, not altered, not null
+     * @param cal2
+     *            the second calendar, not altered, not null
+     * @return true if they represent the same day
+     * @since 2.1
+     */
+    public static boolean isSameDay(final Calendar cal1, final Calendar cal2) {
+        if (cal1 == null || cal2 == null) {
+            throw nullDateIllegalArgumentException();
+        }
+        return cal1.get(Calendar.ERA) == cal2.get(Calendar.ERA) && cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR)
+            && cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR);
+    }
+
+    // -----------------------------------------------------------------------
+    /**
+     * Checks if two date objects represent the same instant in time.
+     *
+     * <p>
+     * This method compares the long millisecond time of the two objects.
+     *
+     * @param date1
+     *            the first date, not altered, not null
+     * @param date2
+     *            the second date, not altered, not null
+     * @return true if they represent the same millisecond instant
+     * @since 2.1
+     */
+    public static boolean isSameInstant(final Date date1, final Date date2) {
+        if (date1 == null || date2 == null) {
+            throw nullDateIllegalArgumentException();
+        }
+        return date1.getTime() == date2.getTime();
+    }
+
+    /**
+     * Checks if two calendar objects represent the same instant in time.
+     *
+     * <p>
+     * This method compares the long millisecond time of the two objects.
+     *
+     * @param cal1
+     *            the first calendar, not altered, not null
+     * @param cal2
+     *            the second calendar, not altered, not null
+     * @return true if they represent the same millisecond instant
+     * @since 2.1
+     */
+    public static boolean isSameInstant(final Calendar cal1, final Calendar cal2) {
+        if (cal1 == null || cal2 == null) {
+            throw nullDateIllegalArgumentException();
+        }
+        return cal1.getTime().getTime() == cal2.getTime().getTime();
+    }
+
+    /**
+     * Null date illegal argument exception.
+     *
+     * @return the illegal argument exception
+     */
+    private static IllegalArgumentException nullDateIllegalArgumentException() {
+        return new IllegalArgumentException("The date must not be null");
     }
 }
