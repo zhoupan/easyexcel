@@ -28,6 +28,11 @@ public class ExcelWriterSheetBuilder extends AbstractExcelWriterParameterBuilder
         this.excelWriter = excelWriter;
     }
 
+    public ExcelWriterSheetBuilder newSheet() {
+        this.writeSheet = new WriteSheet();
+        return this;
+    }
+
     /**
      * Starting from 0
      *
@@ -54,12 +59,56 @@ public class ExcelWriterSheetBuilder extends AbstractExcelWriterParameterBuilder
         return writeSheet;
     }
 
-    public void doWrite(List data) {
+    /**
+     * Write data and finish.
+     * 
+     * @param data
+     * @return
+     */
+    public ExcelWriterSheetBuilder doWrite(List<?> data) {
+        return this.doWrite(data, true);
+    }
+
+    /**
+     * Write data.
+     * 
+     * @param data
+     *            rows
+     * @param isFinished
+     *            if finished
+     * @return
+     */
+    public ExcelWriterSheetBuilder doWrite(List<?> data, boolean isFinished) {
         if (excelWriter == null) {
             throw new ExcelGenerateException("Must use 'EasyExcelFactory.write().sheet()' to call this method");
         }
         excelWriter.write(data, build());
-        excelWriter.finish();
+        if (isFinished) {
+            excelWriter.finish();
+        }
+        return this;
+    }
+
+    /**
+     * Write rows and not finish. Shorted method for doWrite(data, false)
+     * 
+     * @param data
+     * @return
+     */
+    public ExcelWriterSheetBuilder append(List<?> data) {
+        return doWrite(data, false);
+    }
+
+    /**
+     * Finish this current work ,close worksheet and stream. Don't forget to call this method and release resources.
+     * 
+     * @return
+     */
+    public ExcelWriterSheetBuilder finish() {
+        if (this.excelWriter != null) {
+            this.excelWriter.finish();
+        }
+        return this;
     }
 
     public void doFill(Object data) {
