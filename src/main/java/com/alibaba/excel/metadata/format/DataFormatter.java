@@ -271,7 +271,7 @@ public class DataFormatter {
             return getDefaultFormat();
         }
 
-        if (DateUtils.isADateFormat(dataFormat, formatStr)) {
+        if (DateUtils.isDateFormat(dataFormat, formatStr)) {
             return createDateFormat(formatStr);
         }
         // Excel supports fractions in format strings, which Java doesn't
@@ -644,7 +644,7 @@ public class DataFormatter {
      * @return
      */
     public String format(BigDecimal data, Integer dataFormat, String dataFormatString) {
-        if (DateUtils.isADateFormat(dataFormat, dataFormatString)) {
+        if (DateUtils.isDateFormat(dataFormat, dataFormatString)) {
             return getFormattedDateString(data.doubleValue(), dataFormat, dataFormatString);
         }
         return getFormattedNumberString(data, dataFormat, dataFormatString);

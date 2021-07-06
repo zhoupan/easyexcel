@@ -153,11 +153,11 @@ public class ExcelReaderBuilder extends AbstractExcelReaderParameterBuilder<Exce
      *
      * @see SAXParserFactory#newInstance()
      * @see SAXParserFactory#newInstance(String, ClassLoader)
-     * @param xlsxSAXParserFactoryName
+     * @param xlsxFactoryClassName
      * @return
      */
-    public ExcelReaderBuilder xlsxSAXParserFactoryName(String xlsxSAXParserFactoryName) {
-        readWorkbook.setXlsxSAXParserFactoryName(xlsxSAXParserFactoryName);
+    public ExcelReaderBuilder xlsxSAXParserFactoryName(String xlsxFactoryClassName) {
+        readWorkbook.setXlsxSAXParserFactoryName(xlsxFactoryClassName);
         return this;
     }
 

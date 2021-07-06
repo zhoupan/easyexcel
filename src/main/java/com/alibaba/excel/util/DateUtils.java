@@ -28,20 +28,20 @@ public class DateUtils {
         new ThreadLocal<Map<String, SimpleDateFormat>>();
 
     /**
-     * The following patterns are used in {@link #isADateFormat(Integer, String)}
+     * The following patterns are used in {@link #isDateFormat(Integer, String)}
      */
-    private static final Pattern date_ptrn1 = Pattern.compile("^\\[\\$\\-.*?\\]");
-    private static final Pattern date_ptrn2 = Pattern.compile("^\\[[a-zA-Z]+\\]");
-    private static final Pattern date_ptrn3a = Pattern.compile("[yYmMdDhHsS]");
+    private static final Pattern DATE_PATTERN_1 = Pattern.compile("^\\[\\$\\-.*?\\]");
+    private static final Pattern DATE_PATTERN_2 = Pattern.compile("^\\[[a-zA-Z]+\\]");
+    private static final Pattern DATE_PATTERN_3A = Pattern.compile("[yYmMdDhHsS]");
     // add "\u5e74 \u6708 \u65e5" for Chinese/Japanese date format:2017 \u5e74 2 \u6708 7 \u65e5
-    private static final Pattern date_ptrn3b =
+    private static final Pattern DATE_PATTERN_3B =
         Pattern.compile("^[\\[\\]yYmMdDhHsS\\-T/\u5e74\u6708\u65e5,. :\"\\\\]+0*[ampAMP/]*$");
     // elapsed time patterns: [h],[m] and [s]
-    private static final Pattern date_ptrn4 = Pattern.compile("^\\[([hH]+|[mM]+|[sS]+)\\]");
+    private static final Pattern DATE_PATTERN_4 = Pattern.compile("^\\[([hH]+|[mM]+|[sS]+)\\]");
     // for format which start with "[DBNum1]" or "[DBNum2]" or "[DBNum3]" could be a Chinese date
-    private static final Pattern date_ptrn5 = Pattern.compile("^\\[DBNum(1|2|3)\\]");
+    private static final Pattern DATE_PATTERN_5 = Pattern.compile("^\\[DBNum(1|2|3)\\]");
     // for format which start with "年" or "月" or "日" or "时" or "分" or "秒" could be a Chinese date
-    private static final Pattern date_ptrn6 = Pattern.compile("(年|月|日|时|分|秒)+");
+    private static final Pattern DATE_PATTERN_6 = Pattern.compile("(年|月|日|时|分|秒)+");
 
     public static final String DATE_FORMAT_10 = "yyyy-MM-dd";
     public static final String DATE_FORMAT_14 = "yyyyMMddHHmmss";
@@ -156,7 +156,7 @@ public class DateUtils {
      * @param formatString
      * @return
      */
-    public static boolean isADateFormat(Integer formatIndex, String formatString) {
+    public static boolean isDateFormat(Integer formatIndex, String formatString) {
         if (formatIndex == null) {
             return false;
         }
@@ -170,7 +170,7 @@ public class DateUtils {
                 return isDateCachedData;
             }
         }
-        boolean isDate = isADateFormatUncached(formatIndex, formatString);
+        boolean isDate = isDateFormatUncached(formatIndex, formatString);
         isDateCache.put(formatIndex, isDate);
         return isDate;
     }
@@ -182,7 +182,7 @@ public class DateUtils {
      * @param formatString
      * @return
      */
-    public static boolean isADateFormatUncached(Integer formatIndex, String formatString) {
+    public static boolean isDateFormatUncached(Integer formatIndex, String formatString) {
         // First up, is this an internal date format?
         if (isInternalDateFormat(formatIndex)) {
             return true;
@@ -218,18 +218,18 @@ public class DateUtils {
         fs = sb.toString();
 
         // short-circuit if it indicates elapsed time: [h], [m] or [s]
-        if (date_ptrn4.matcher(fs).matches()) {
+        if (DATE_PATTERN_4.matcher(fs).matches()) {
             return true;
         }
         // If it starts with [DBNum1] or [DBNum2] or [DBNum3]
         // then it could be a Chinese date
-        fs = date_ptrn5.matcher(fs).replaceAll("");
+        fs = DATE_PATTERN_5.matcher(fs).replaceAll("");
         // If it starts with [$-...], then could be a date, but
         // who knows what that starting bit is all about
-        fs = date_ptrn1.matcher(fs).replaceAll("");
+        fs = DATE_PATTERN_1.matcher(fs).replaceAll("");
         // If it starts with something like [Black] or [Yellow],
         // then it could be a date
-        fs = date_ptrn2.matcher(fs).replaceAll("");
+        fs = DATE_PATTERN_2.matcher(fs).replaceAll("");
         // You're allowed something like dd/mm/yy;[red]dd/mm/yy
         // which would place dates before 1900/1904 in red
         // For now, only consider the first one
@@ -240,25 +240,25 @@ public class DateUtils {
 
         // Ensure it has some date letters in it
         // (Avoids false positives on the rest of pattern 3)
-        if (!date_ptrn3a.matcher(fs).find()) {
+        if (!DATE_PATTERN_3A.matcher(fs).find()) {
             return false;
         }
 
         // If we get here, check it's only made up, in any case, of:
         // y m d h s - \ / , . : [ ] T
         // optionally followed by AM/PM
-        boolean result = date_ptrn3b.matcher(fs).matches();
+        boolean result = DATE_PATTERN_3B.matcher(fs).matches();
         if (result) {
             return true;
         }
-        result = date_ptrn6.matcher(fs).find();
+        result = DATE_PATTERN_6.matcher(fs).find();
         return result;
     }
 
     /**
      * Given a format ID this will check whether the format represents an internal excel date format or not.
      *
-     * @see #isADateFormat(Integer, String)
+     * @see #isDateFormat(Integer, String)
      */
     public static boolean isInternalDateFormat(int format) {
         switch (format) {

@@ -26,6 +26,7 @@ import java.util.Random;
  * <a href="https://commons.apache.org/rng">Commons RNG</a>, that may be a better choice for applications with more
  * stringent requirements (performance and/or correctness).
  *
+ * @author Apache Commons project
  * @since 3.3
  */
 public class RandomUtils {
@@ -48,7 +49,7 @@ public class RandomUtils {
     }
 
     /**
-     * Returns a random boolean value
+     * Returns a random boolean value.
      *
      * @return the random boolean
      * @since 3.5
@@ -81,10 +82,10 @@ public class RandomUtils {
      *            the smallest value that can be returned, must be non-negative
      * @param endExclusive
      *            the upper bound (not included)
+     * @return the random integer
      * @throws IllegalArgumentException
      *             if {@code startInclusive > endExclusive} or if {@code
      *     startInclusive} is negative
-     * @return the random integer
      */
     public static int nextInt(final int startInclusive, final int endExclusive) {
         CoreUtils.isTrue(endExclusive >= startInclusive, "Start value must be smaller or equal to end value.");
@@ -115,10 +116,10 @@ public class RandomUtils {
      *            the smallest value that can be returned, must be non-negative
      * @param endExclusive
      *            the upper bound (not included)
+     * @return the random long
      * @throws IllegalArgumentException
      *             if {@code startInclusive > endExclusive} or if {@code
      *     startInclusive} is negative
-     * @return the random long
      */
     public static long nextLong(final long startInclusive, final long endExclusive) {
         CoreUtils.isTrue(endExclusive >= startInclusive, "Start value must be smaller or equal to end value.");
@@ -149,10 +150,10 @@ public class RandomUtils {
      *            the smallest value that can be returned, must be non-negative
      * @param endExclusive
      *            the upper bound (not included)
+     * @return the random double
      * @throws IllegalArgumentException
      *             if {@code startInclusive > endExclusive} or if {@code
      *     startInclusive} is negative
-     * @return the random double
      */
     public static double nextDouble(final double startInclusive, final double endExclusive) {
         CoreUtils.isTrue(endExclusive >= startInclusive, "Start value must be smaller or equal to end value.");
@@ -183,10 +184,10 @@ public class RandomUtils {
      *            the smallest value that can be returned, must be non-negative
      * @param endExclusive
      *            the upper bound (not included)
+     * @return the random float
      * @throws IllegalArgumentException
      *             if {@code startInclusive > endExclusive} or if {@code
      *     startInclusive} is negative
-     * @return the random float
      */
     public static float nextFloat(final float startInclusive, final float endExclusive) {
         CoreUtils.isTrue(endExclusive >= startInclusive, "Start value must be smaller or equal to end value.");

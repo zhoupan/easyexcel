@@ -163,11 +163,11 @@ public class XlsxSaxAnalyser implements ExcelReadExecutor {
         InputSource inputSource = new InputSource(inputStream);
         try {
             SAXParserFactory saxFactory;
-            String xlsxSAXParserFactoryName = xlsxReadContext.xlsxReadWorkbookHolder().getSaxParserFactoryName();
-            if (StringUtils.isEmpty(xlsxSAXParserFactoryName)) {
+            String xlsxFactoryClassName = xlsxReadContext.xlsxReadWorkbookHolder().getSaxParserFactoryName();
+            if (StringUtils.isEmpty(xlsxFactoryClassName)) {
                 saxFactory = SAXParserFactory.newInstance();
             } else {
-                saxFactory = SAXParserFactory.newInstance(xlsxSAXParserFactoryName, null);
+                saxFactory = SAXParserFactory.newInstance(xlsxFactoryClassName, null);
             }
             saxFactory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
             saxFactory.setFeature("http://xml.org/sax/features/external-general-entities", false);

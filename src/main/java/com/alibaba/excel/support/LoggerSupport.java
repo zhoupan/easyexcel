@@ -21,7 +21,12 @@ import org.slf4j.spi.LocationAwareLogger;
 
 import com.alibaba.excel.util.CoreUtils;
 
-/** LoggerSupport. */
+/**
+ * LoggerSupport.
+ * 
+ * @author zhoupan
+ */
+
 public class LoggerSupport {
 
     /** The Constant LOG_LEVEL_TRACE. */

@@ -48,6 +48,9 @@ import java.util.regex.Pattern;
  */
 public class CoreUtils {
 
+    /** The Constant SLASH. */
+    public static final String SLASH = "/";
+    /** The Constant DEFAULT_IS_TRUE_EX_MESSAGE. */
     private static final String DEFAULT_IS_TRUE_EX_MESSAGE = "The validated expression is false";
     /**
      * Singleton used as a <code>null</code> placeholder where <code>null</code> has another meaning.
@@ -647,6 +650,10 @@ public class CoreUtils {
     /** The Constructor. */
     private CoreUtils() {}
 
+    /** The pattern email. */
+    public static Pattern PATTERN_EMAIL =
+        Pattern.compile("\"^([a-z0-9A-Z]+[-|\\\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\\\.)+[a-zA-Z]{2,}$\"");
+
     /**
      * Checks if is email.
      *
@@ -655,15 +662,27 @@ public class CoreUtils {
      * @return true, if checks if is email
      */
     public static boolean isEmail(String email) {
-        String PHONE_PATTERN = "^([a-z0-9A-Z]+[-|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$";
-        boolean isEmail = Pattern.compile(PHONE_PATTERN).matcher(email).matches();
-        return isEmail;
+        return PATTERN_EMAIL.matcher(email).matches();
     }
 
+    /**
+     * Length.
+     *
+     * @param cs
+     *            the cs
+     * @return the int
+     */
     public static int length(final CharSequence cs) {
         return cs == null ? 0 : cs.length();
     }
 
+    /**
+     * Checks if is numeric.
+     *
+     * @param cs
+     *            the cs
+     * @return true, if is numeric
+     */
     public static boolean isNumeric(final String cs) {
         if (isEmpty(cs)) {
             return false;
@@ -1129,9 +1148,8 @@ public class CoreUtils {
             return null;
         }
 
-        // handle negatives, which means last n characters
         if (start < 0) {
-            start = str.length() + start; // remember start is negative
+            start = str.length() + start;
         }
 
         if (start < 0) {
@@ -1188,10 +1206,10 @@ public class CoreUtils {
 
         // handle negatives
         if (end < 0) {
-            end = str.length() + end; // remember end is negative
+            end = str.length() + end;
         }
         if (start < 0) {
-            start = str.length() + start; // remember start is negative
+            start = str.length() + start;
         }
 
         // check length next
@@ -1800,7 +1818,8 @@ public class CoreUtils {
         }
 
         // two or more elements
-        StringBuffer buf = new StringBuffer(256); // Java default is 16, probably too
+        // Java default is 16, probably too
+        StringBuffer buf = new StringBuffer(256);
         // small
         if (first != null) {
             buf.append(first);
@@ -1848,7 +1867,8 @@ public class CoreUtils {
         }
 
         // two or more elements
-        StringBuffer buf = new StringBuffer(256); // Java default is 16, probably too
+        // Java default is 16, probably too
+        StringBuffer buf = new StringBuffer(256);
         // small
         if (first != null) {
             buf.append(first);
@@ -2524,6 +2544,7 @@ public class CoreUtils {
         if (len == 0) {
             return EMPTY_STRING_ARRAY;
         }
+        @SuppressWarnings("rawtypes")
         List list = new ArrayList();
         int sizePlus1 = 1;
         int i = 0, start = 0;
@@ -5103,9 +5124,8 @@ public class CoreUtils {
      *            the arguments to be substituted into the message template. Arguments are converted to strings using
      * @return the string {@link String#valueOf(Object)}. Arguments can be null.
      */
-    // Note that this is somewhat-improperly used from Verify.java as well.
     static String format(String template, Object... args) {
-        template = String.valueOf(template); // null -> "null"
+        template = String.valueOf(template);
 
         // start substituting the arguments into the '%s' placeholders
         StringBuilder builder = new StringBuilder(template.length() + 16 * args.length);
@@ -5139,7 +5159,7 @@ public class CoreUtils {
     // Preconditions}
 
     /**
-     * Lists files in a directory, asserting that the supplied directory satisfies exists and is a directory
+     * Lists files in a directory, asserting that the supplied directory satisfies exists and is a directory.
      *
      * @param directory
      *            The directory to list
@@ -5159,7 +5179,8 @@ public class CoreUtils {
         }
 
         final File[] files = directory.listFiles();
-        if (files == null) { // null if security restricted
+        // null if security restricted
+        if (files == null) {
             throw new IOException("Failed to list contents of " + directory);
         }
         return files;
@@ -5259,10 +5280,10 @@ public class CoreUtils {
     // -----------------------------------------------------------------------
     /**
      * Deletes a file. If file is a directory, delete it and all sub-directories.
-     *
+     * 
      * <p>
      * The difference between File.delete() and this method are:
-     *
+     * 
      * <ul>
      * <li>A directory to be deleted does not have to be empty.
      * <li>You get exceptions when a file or directory cannot be deleted. (java.io.File methods returns a boolean)
@@ -5270,12 +5291,10 @@ public class CoreUtils {
      *
      * @param file
      *            file or directory to delete, must not be {@code null}
-     * @throws NullPointerException
-     *             if the directory is {@code null}
-     * @throws FileNotFoundException
-     *             if the file was not found
      * @throws IOException
      *             in case deletion is unsuccessful
+     * @throws NullPointerException
+     *             if the directory is {@code null}
      */
     public static void forceDelete(final File file) throws IOException {
         if (file.isDirectory()) {
@@ -5297,10 +5316,10 @@ public class CoreUtils {
      *
      * @param file
      *            file or directory to delete, must not be {@code null}
-     * @throws NullPointerException
-     *             if the file is {@code null}
      * @throws IOException
      *             in case deletion is unsuccessful
+     * @throws NullPointerException
+     *             if the file is {@code null}
      */
     public static void forceDeleteOnExit(final File file) throws IOException {
         if (file.isDirectory()) {
@@ -5315,10 +5334,10 @@ public class CoreUtils {
      *
      * @param directory
      *            directory to delete, must not be {@code null}
-     * @throws NullPointerException
-     *             if the directory is {@code null}
      * @throws IOException
      *             in case deletion is unsuccessful
+     * @throws NullPointerException
+     *             if the directory is {@code null}
      */
     private static void deleteDirectoryOnExit(final File directory) throws IOException {
         if (!directory.exists()) {
@@ -5336,10 +5355,10 @@ public class CoreUtils {
      *
      * @param directory
      *            directory to clean, must not be {@code null}
-     * @throws NullPointerException
-     *             if the directory is {@code null}
      * @throws IOException
      *             in case cleaning is unsuccessful
+     * @throws NullPointerException
+     *             if the directory is {@code null}
      */
     private static void cleanDirectoryOnExit(final File directory) throws IOException {
         final File[] files = verifiedListFiles(directory);
@@ -5365,10 +5384,10 @@ public class CoreUtils {
      *
      * @param directory
      *            directory to create, must not be {@code null}
-     * @throws NullPointerException
-     *             if the directory is {@code null}
      * @throws IOException
      *             if the directory cannot be created or the file already exists but is not a directory
+     * @throws NullPointerException
+     *             if the directory is {@code null}
      */
     public static void forceMkdir(final File directory) throws IOException {
         if (directory.exists()) {
@@ -5395,10 +5414,10 @@ public class CoreUtils {
      *
      * @param file
      *            file with parent to create, must not be {@code null}
-     * @throws NullPointerException
-     *             if the file is {@code null}
      * @throws IOException
      *             if the parent directory cannot be created
+     * @throws NullPointerException
+     *             if the file is {@code null}
      * @since 2.5
      */
     public static void forceMkdirParent(final File file) throws IOException {
@@ -5682,11 +5701,11 @@ public class CoreUtils {
      */
     public static boolean isUrlEqual(String left, String right) {
         try {
-            if (CoreUtils.endsWith(left, "/")) {
-                left = CoreUtils.substringBeforeLast(left, "/");
+            if (CoreUtils.endsWith(left, SLASH)) {
+                left = CoreUtils.substringBeforeLast(left, SLASH);
             }
-            if (CoreUtils.endsWith(right, "/")) {
-                right = CoreUtils.substringBeforeLast(right, "/");
+            if (CoreUtils.endsWith(right, SLASH)) {
+                right = CoreUtils.substringBeforeLast(right, SLASH);
             }
             return CoreUtils.equalsIgnoreCase(left, right);
         } catch (Throwable e) {
@@ -5694,11 +5713,29 @@ public class CoreUtils {
         }
     }
 
+    /**
+     * Gets the super class generic type.
+     *
+     * @param <T>
+     *            the generic type
+     * @param clazz
+     *            the clazz
+     * @return the super class generic type
+     */
     @SuppressWarnings("unchecked")
     public static <T> Class<T> getSuperClassGenericType(Class<T> clazz) {
         return getSuperClassGenericType(clazz, 0);
     }
 
+    /**
+     * Gets the super class generic type.
+     *
+     * @param clazz
+     *            the clazz
+     * @param index
+     *            the index
+     * @return the super class generic type
+     */
     @SuppressWarnings("rawtypes")
     public static Class getSuperClassGenericType(Class clazz, int index) {
         Type genType = null;

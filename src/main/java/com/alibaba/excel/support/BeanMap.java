@@ -21,14 +21,15 @@ public class BeanMap extends AbstractMap<String, Object> implements Map<String, 
     /**
      * Replace for (net.sf.cglib.beans.BeanMap.create)
      *
-     * @param bean
-     * @return
+     * @param bean the bean
+     * @return the bean map
      */
     public static BeanMap create(Object bean) {
         BeanMap gen = new BeanMap(bean);
         return gen;
     }
 
+    /** The bean. */
     private transient Object bean;
 
     /** Constructs a new empty <code>BeanMap</code>. */
@@ -37,6 +38,7 @@ public class BeanMap extends AbstractMap<String, Object> implements Map<String, 
     /**
      * Constructs a new <code>BeanMap</code> that operates on the specified bean. If the given bean is
      * <code>null</code>, then this map will be empty.
+     * 
      *
      * @param bean
      *            the bean for this map to operate on
@@ -46,13 +48,22 @@ public class BeanMap extends AbstractMap<String, Object> implements Map<String, 
         initialise();
     }
 
-    // Map interface
-    // -------------------------------------------------------------------------
+    /**
+     * To string.
+     *
+     * @return the string
+     */
     @Override
     public String toString() {
         return "BeanMap<" + String.valueOf(bean) + ">";
     }
 
+    /**
+     * Clone.
+     *
+     * @return the object
+     * @throws CloneNotSupportedException the clone not supported exception
+     */
     @Override
     public Object clone() throws CloneNotSupportedException {
         BeanMap newMap = new BeanMap();
@@ -113,15 +124,36 @@ public class BeanMap extends AbstractMap<String, Object> implements Map<String, 
         return this.holder.containsKey(name);
     }
 
+    /**
+     * Contains value.
+     *
+     * @param value the value
+     * @return true, if successful
+     */
     @Override
     public boolean containsValue(Object value) {
         return this.holder.containsValue(value);
     }
 
+    /**
+     * Gets the.
+     *
+     * @param name the name
+     * @return the object
+     */
     public Object get(String name) {
         return BeanUtil.silent.getProperty(this.bean, name.toString());
     }
 
+    /**
+     * Put.
+     *
+     * @param name the name
+     * @param value the value
+     * @return the object
+     * @throws IllegalArgumentException the illegal argument exception
+     * @throws ClassCastException the class cast exception
+     */
     @Override
     public Object put(String name, Object value) throws IllegalArgumentException, ClassCastException {
         if (bean != null) {
@@ -193,6 +225,9 @@ public class BeanMap extends AbstractMap<String, Object> implements Map<String, 
         initialise();
     }
 
+    /**
+     * Initialise.
+     */
     private void initialise() {
         if (getBean() == null) {
             return;
@@ -202,13 +237,25 @@ public class BeanMap extends AbstractMap<String, Object> implements Map<String, 
         walker.bean(this.getBean());
     }
 
+    /** The holder. */
     private Map<String, Object> holder = new HashMap<String, Object>();
 
+    /**
+     * Visit property.
+     *
+     * @param name the name
+     * @param value the value
+     */
     @Override
     public void visitProperty(String name, Object value) {
         this.holder.put(name, value);
     }
 
+    /**
+     * Entry set.
+     *
+     * @return the sets the
+     */
     @Override
     public Set<Entry<String, Object>> entrySet() {
         return this.holder.entrySet();

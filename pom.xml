@@ -150,6 +150,7 @@
             <exclude>com/alibaba/excel/util/DateUtils.java</exclude>
             <exclude>com/alibaba/excel/metadata/format/DataFormatter.java</exclude>
             <exclude>com/alibaba/excel/metadata/format/ExcelGeneralNumberFormat.java</exclude>
+            <exclude>com/alibaba/excel/util/CoreUtils.java</exclude>
           </excludes>
         </configuration>
         <executions>
