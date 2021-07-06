@@ -6,7 +6,6 @@ import org.apache.poi.openxml4j.opc.PackagePart;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.alibaba.excel.cache.Ehcache;
 import com.alibaba.excel.cache.MapCache;
 import com.alibaba.excel.cache.ReadCache;
 
@@ -77,6 +76,7 @@ public class SimpleReadCacheSelector implements ReadCacheSelector {
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug("Use ehcache.size:{}", size);
         }
-        return new Ehcache(maxCacheActivateSize);
+        // return new Ehcache(maxCacheActivateSize);
+        return new MapCache();
     }
 }
