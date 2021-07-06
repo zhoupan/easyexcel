@@ -144,6 +144,13 @@ public class ExcelWriterBuilder extends AbstractExcelWriterParameterBuilder<Exce
         return this.sheet(sheetName);
     }
 
+    public ExcelWriterSheetBuilder newSheet(String sheetName, Class<?> headerClass) {
+        this.excelWriterSheetBuilder().newSheet();
+        ExcelWriterSheetBuilder builder = this.sheet(sheetName);
+        builder.build().setClazz(headerClass);
+        return builder;
+    }
+
     public ExcelWriterSheetBuilder newSheet(Integer sheetNo) {
         this.excelWriterSheetBuilder().newSheet();
         return this.sheet(sheetNo);
