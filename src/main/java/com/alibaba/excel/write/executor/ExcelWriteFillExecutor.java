@@ -1,6 +1,7 @@
 package com.alibaba.excel.write.executor;
 
 import java.util.ArrayList;
+
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -22,6 +23,7 @@ import com.alibaba.excel.enums.WriteTemplateAnalysisCellTypeEnum;
 import com.alibaba.excel.exception.ExcelGenerateException;
 import com.alibaba.excel.metadata.CellData;
 import com.alibaba.excel.metadata.property.ExcelContentProperty;
+import com.alibaba.excel.support.BeanMap;
 import com.alibaba.excel.util.CollectionUtils;
 import com.alibaba.excel.util.StringUtils;
 import com.alibaba.excel.util.WriteHandlerUtils;
@@ -30,13 +32,12 @@ import com.alibaba.excel.write.metadata.fill.FillConfig;
 import com.alibaba.excel.write.metadata.fill.FillWrapper;
 import com.alibaba.excel.write.metadata.holder.WriteSheetHolder;
 
-import net.sf.cglib.beans.BeanMap;
-
 /**
  * Fill the data into excel
  *
  * @author Jiaju Zhuang
  */
+@SuppressWarnings("rawtypes")
 public class ExcelWriteFillExecutor extends AbstractExcelWriteExecutor {
 
     private static final String ESCAPE_FILL_PREFIX = "\\\\\\{";
@@ -94,7 +95,7 @@ public class ExcelWriteFillExecutor extends AbstractExcelWriteExecutor {
 
         Object realData;
         if (data instanceof FillWrapper) {
-            FillWrapper fillWrapper = (FillWrapper) data;
+            FillWrapper fillWrapper = (FillWrapper)data;
             currentDataPrefix = fillWrapper.getName();
             realData = fillWrapper.getCollectionData();
         } else {
@@ -106,7 +107,7 @@ public class ExcelWriteFillExecutor extends AbstractExcelWriteExecutor {
         // processing data
         if (realData instanceof Collection) {
             List<AnalysisCell> analysisCellList = readTemplateData(templateCollectionAnalysisCache);
-            Collection collectionData = (Collection) realData;
+            Collection collectionData = (Collection)realData;
             if (CollectionUtils.isEmpty(collectionData)) {
                 return;
             }
@@ -181,7 +182,7 @@ public class ExcelWriteFillExecutor extends AbstractExcelWriteExecutor {
         Integer relativeRowIndex) {
         Map dataMap;
         if (oneRowData instanceof Map) {
-            dataMap = (Map) oneRowData;
+            dataMap = (Map)oneRowData;
         } else {
             dataMap = BeanMap.create(oneRowData);
         }
@@ -291,7 +292,7 @@ public class ExcelWriteFillExecutor extends AbstractExcelWriteExecutor {
         }
 
         Row row = createRowIfNecessary(sheet, cachedSheet, lastRowIndex, fillConfig, analysisCell, isOriginalCell);
-        Cell cell = createCellIfNecessary(row,lastColumnIndex);
+        Cell cell = createCellIfNecessary(row, lastColumnIndex);
 
         Map<AnalysisCell, CellStyle> collectionFieldStyleMap = collectionFieldStyleCache.get(currentUniqueDataFlag);
         if (collectionFieldStyleMap == null) {
@@ -332,8 +333,10 @@ public class ExcelWriteFillExecutor extends AbstractExcelWriteExecutor {
             if (fillConfig.getForceNewRow()) {
                 row = cachedSheet.createRow(lastRowIndex);
             } else {
-                // The last row of the middle disk inside empty rows, resulting in cachedSheet can not get inside.
-                // Will throw Attempting to write a row[" + rownum + "] " + "in the range [0," + this._sh.getLastRowNum() + "] that is already written to disk.
+                // The last row of the middle disk inside empty rows, resulting in cachedSheet
+                // can not get inside.
+                // Will throw Attempting to write a row[" + rownum + "] " + "in the range [0," +
+                // this._sh.getLastRowNum() + "] that is already written to disk.
                 try {
                     row = sheet.createRow(lastRowIndex);
                 } catch (IllegalArgumentException ignore) {
@@ -412,7 +415,8 @@ public class ExcelWriteFillExecutor extends AbstractExcelWriteExecutor {
         int startIndex = 0;
         int length = value.length();
         int lastPrepareDataIndex = 0;
-        out: while (startIndex < length) {
+        out:
+        while (startIndex < length) {
             int prefixIndex = value.indexOf(FILL_PREFIX, startIndex);
             if (prefixIndex < 0) {
                 break out;

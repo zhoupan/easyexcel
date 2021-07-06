@@ -16,23 +16,21 @@ import com.alibaba.excel.enums.HeadKindEnum;
 import com.alibaba.excel.metadata.CellData;
 import com.alibaba.excel.metadata.Head;
 import com.alibaba.excel.metadata.property.ExcelContentProperty;
+import com.alibaba.excel.support.BeanMap;
 import com.alibaba.excel.util.ClassUtils;
 import com.alibaba.excel.util.CollectionUtils;
 import com.alibaba.excel.util.WorkBookUtil;
 import com.alibaba.excel.util.WriteHandlerUtils;
-import com.alibaba.excel.write.metadata.WriteWorkbook;
-import com.alibaba.excel.write.metadata.holder.AbstractWriteHolder;
 import com.alibaba.excel.write.metadata.holder.WriteHolder;
 import com.alibaba.excel.write.metadata.holder.WriteSheetHolder;
 import com.alibaba.excel.write.metadata.holder.WriteWorkbookHolder;
-
-import net.sf.cglib.beans.BeanMap;
 
 /**
  * Add the data into excel
  *
  * @author Jiaju Zhuang
  */
+@SuppressWarnings("rawtypes")
 public class ExcelWriteAddExecutor extends AbstractExcelWriteExecutor {
 
     public ExcelWriteAddExecutor(WriteContext writeContext) {
@@ -67,7 +65,7 @@ public class ExcelWriteAddExecutor extends AbstractExcelWriteExecutor {
         Row row = WorkBookUtil.createRow(writeContext.writeSheetHolder().getSheet(), n);
         WriteHandlerUtils.afterRowCreate(writeContext, row, relativeRowIndex, Boolean.FALSE);
         if (oneRowData instanceof List) {
-            addBasicTypeToExcel((List) oneRowData, row, relativeRowIndex);
+            addBasicTypeToExcel((List)oneRowData, row, relativeRowIndex);
         } else {
             addJavaObjectToExcel(oneRowData, row, relativeRowIndex, sortedAllFiledMap);
         }
@@ -172,13 +170,12 @@ public class ExcelWriteAddExecutor extends AbstractExcelWriteExecutor {
             return;
         }
         WriteWorkbookHolder writeWorkbookHolder = writeContext.writeWorkbookHolder();
-        boolean needIgnore =
-            !CollectionUtils.isEmpty(writeWorkbookHolder.getExcludeColumnFiledNames()) || !CollectionUtils
-                .isEmpty(writeWorkbookHolder.getExcludeColumnIndexes()) || !CollectionUtils
-                .isEmpty(writeWorkbookHolder.getIncludeColumnFiledNames()) || !CollectionUtils
-                .isEmpty(writeWorkbookHolder.getIncludeColumnIndexes());
-        ClassUtils.declaredFields(clazz, sortedAllFiledMap,
-            writeWorkbookHolder.getWriteWorkbook().getConvertAllFiled(), needIgnore, writeWorkbookHolder);
+        boolean needIgnore = !CollectionUtils.isEmpty(writeWorkbookHolder.getExcludeColumnFiledNames())
+            || !CollectionUtils.isEmpty(writeWorkbookHolder.getExcludeColumnIndexes())
+            || !CollectionUtils.isEmpty(writeWorkbookHolder.getIncludeColumnFiledNames())
+            || !CollectionUtils.isEmpty(writeWorkbookHolder.getIncludeColumnIndexes());
+        ClassUtils.declaredFields(clazz, sortedAllFiledMap, writeWorkbookHolder.getWriteWorkbook().getConvertAllFiled(),
+            needIgnore, writeWorkbookHolder);
     }
 
 }
